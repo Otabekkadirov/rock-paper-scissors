@@ -9,4 +9,21 @@ function computerPlay() {
   return weapons[random];
 }
 
+// Let's make a function that prompts the user for either rock, paper or scissors.
+// We name this function humanPlay() that gets no parameter for now.
+function humanPlay(userInput) {
+  let cleanInput = userInput.trim().toLowerCase();
+  if (
+    cleanInput === "rock" ||
+    cleanInput === "scissors" ||
+    cleanInput === "paper" ||
+    cleanInput === "bomb"
+  ) {
+    return cleanInput;
+  } else {
+    alert("Wrong weapon");
+    return;
+  }
+}
+
 let computerSelection = computerPlay();
