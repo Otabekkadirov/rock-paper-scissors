@@ -1,8 +1,6 @@
-// Let's make a simple function that returns rock or paper or scissors in a random order.
-// We name this function computerPlay() that gets no parameter.
-
+// Make a simple function that returns rock or paper or scissors in a random order.
 function computerPlay() {
-  // We need to tell the computer to choose between rock, paper and scissors
+  // Tell the computer to choose between rock, paper and scissors
   let weapons = ["rock", "paper", "scissors"];
   // Computer needs a random number from 1 to 3 to choose between weapons
   let random = Math.floor(Math.random() * 3);
@@ -31,9 +29,10 @@ function playRound(playerSelection, computerSelection) {
   // First we need to check when the round is tie
   if (playerSelection === computerSelection) {
     return "tie";
+  }
 
-    // Then we check every case when the user wins
-  } else if (playerSelection === "rock" && computerSelection === "scissors") {
+  // Then we check every case when the user wins
+  if (playerSelection === "rock" && computerSelection === "scissors") {
     return "user won";
   } else if (playerSelection === "scissors" && computerSelection === "paper") {
     return "user won";
@@ -48,42 +47,44 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// Let's make a function that plays a game of 5 rounds.
-function game() {
-  // We need to keep the scores of human and computer.
-  let humanScore = 0;
-  let computerScore = 0;
+const buttons = document.querySelectorAll(".btn");
+const resultDiv = document.querySelector(".result");
+const user = document.querySelector("#user>span");
+const computer = document.querySelector("#computer>span");
 
-  // We call playRound() function 5 times.
-  for (let i = 0; i <= 5; i++) {
-    // playRound() function gets 2 input, so we prompt the user for an input.
-    let userWeapon = prompt("Choose your weapon: Rock, Paper or Scissors");
-    let playerSelection = humanPlay(userWeapon);
-    let computerSelection = computerPlay();
-    // We store the result of each round to increment the scores of the players.
-    let result = playRound(playerSelection, computerSelection);
-    console.log("i: " + i);
+let userScore = 0;
+let computerScore = 0;
 
-    // When players win the round, we increment their score
-    if (result === "user won") {
-      humanScore++;
-      console.log("human: " + humanScore);
-    } else if (result === "computer won") {
-      computerScore++;
-      console.log("computer: " + computerScore);
-    }
-    // If the round is tie, replay the round;
-    if (result === "tie") {
-      i--;
-      console.log("round: tie");
-    }
-    // Whoever scores 3 wins.
-    if (humanScore === 3) {
-      return `Game over. Human ${humanScore}: Computer ${computerScore} \nHuman won`;
-    } else if (computerScore === 3) {
-      return `Game over. Human ${humanScore}: Computer ${computerScore} \nComputer won`;
-    }
+const game = (event) => {
+  console.log(event.target.textContent);
+  const computerSelection = computerPlay();
+  const playerSelection = humanPlay(event.target.textContent);
+  const result = playRound(playerSelection, computerSelection);
+
+  if (result === "user won") {
+    userScore++;
+    user.innerHTML = userScore;
+  } else if (result === "computer won") {
+    computerScore++;
+    computer.innerHTML = computerScore;
   }
-}
+  if (userScore === 5) {
+    resultDiv.innerHTML =
+      "Game over. User won. Refresh the page to play again.";
+  } else if (computerScore === 5) {
+    resultDiv.innerHTML =
+      "Game over. Computer won. Refresh the page to play again.";
+  } else {
+    resultDiv.innerHTML = result;
+  }
+};
 
-console.log(game());
+buttons.forEach((button) => {
+  if (userScore < 5) {
+    button.addEventListener("click", game);
+  } else if (computerScore < 5) {
+    button.addEventListener("click", game);
+  } else {
+    button.removeEventListener("click", game);
+  }
+});
